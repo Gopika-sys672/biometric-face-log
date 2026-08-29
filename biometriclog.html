@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Biometric Face Login System</title>
+
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            text-align:center;
+            background-color:#f4f4f4;
+        }
+
+        h1{
+            color:#333;
+        }
+
+        video,canvas{
+            border:2px solid black;
+            border-radius:10px;
+            margin-top:10px;
+        }
+
+        button{
+            padding:10px 20px;
+            font-size:16px;
+            background-color:#4CAF50;
+            color:white;
+            border:none;
+            border-radius:5px;
+            cursor:pointer;
+        }
+
+        button:hover{
+            background-color:#45a049;
+        }
+
+        table{
+            margin:auto;
+            margin-top:20px;
+            border-collapse:collapse;
+            width:60%;
+            background:white;
+        }
+
+        th,td{
+            border:1px solid black;
+            padding:10px;
+        }
+
+        th{
+            background-color:#4CAF50;
+            color:white;
+        }
+
+        #msg{
+            margin-top:15px;
+            font-size:20px;
+            color:green;
+            font-weight:bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Biometric Face Login System</h1>
+
+<video id="video" width="450" height="300" autoplay></video>
+
+<br><br>
+
+<button onclick="captureFace()">Face Login</button>
+
+<br><br>
+
+<canvas id="canvas" width="450" height="300"></canvas>
+
+<p id="msg"></p>
+
+<h2>Login Records</h2>
+
+<table id="logTable">
+    <tr>
+        <th>ID</th>
+        <th>Login Date & Time</th>
+    </tr>
+</table>
+
+<script>
+
+let loginCount = 1;
+
+const video = document.getElementById("video");
+
+navigator.mediaDevices.getUserMedia({
+    video:true
+})
+.then(function(stream){
+    video.srcObject = stream;
+})
+.catch(function(error){
+    alert("Camera Access Denied!");
+});
+
+function captureFace(){
+
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+
+    ctx.drawImage(
+        video,
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+    document.getElementById("msg").innerHTML =
+    "✅ Face Login Successful";
+
+    let currentTime =
+    new Date().toLocaleString();
+
+    let table =
+    document.getElementById("logTable");
+
+    let row =
+    table.insertRow();
+
+    row.insertCell(0).innerHTML =
+    loginCount++;
+
+    row.insertCell(1).innerHTML =
+    currentTime;
+}
+
+</script>
+
+</body>
+</html>
